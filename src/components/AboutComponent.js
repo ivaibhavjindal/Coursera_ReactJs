@@ -79,7 +79,7 @@ function About(props) {
                     { props.leaders.map( (leader) => {
                         return (
                             <Media list>
-                                <RenderLeader leader= { leader } />
+                                <RenderLeader leader={ leader } key={ leader.id } />
                             </Media>
                         );
                     }) }
