@@ -28,10 +28,12 @@ class DishDetail extends Component {
                     <h4> Comments </h4>
                     { comments.map( (comment) => {
                         return (
-                            <ul key={ comment.id } className="list-unstyled">
-                                <li>{ comment.comment }</li>
-                                <li> -- { comment.author }, { comment.date }</li>
-                            </ul>
+                            <li key={ comment.id } className="list-unstyled">
+                                <p>{ comment.comment }</p>
+                                <p> -- { comment.author } 
+                                    , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
+                                </p>
+                            </li>
                         );
                     })
                 }
@@ -46,12 +48,13 @@ class DishDetail extends Component {
 
     render() {
         return(
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    { this.renderDish(this.props.selectedDish) }
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        { this.renderDish(this.props.selectedDish) }
+                    </div>
+                    { this.renderComments(this.props.selectedDish ? this.props.selectedDish.comments : null) }
                 </div>
-                { this.renderComments(this.props.selectedDish ? this.props.selectedDish.comments : null) }
-
             </div>
         );
     }
