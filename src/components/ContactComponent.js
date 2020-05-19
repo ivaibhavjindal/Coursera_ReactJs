@@ -16,9 +16,10 @@ class Contact extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(values) {
+    handleSubmit(event, values) {
         console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
+        event.preventDefault();
     }
 
     render() {
@@ -65,7 +66,7 @@ class Contact extends Component {
                       <h3>Send us your Feedback</h3>
                     </div>
                     <div className="col-12 col-md-9">
-                        <LocalForm onSubmit={ (values) => this.handleSubmit(values) }>
+                        <LocalForm onSubmit={ (event, values) => this.handleSubmit(event, values) }>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={ 2 }>First Name</Label>
                                 <Col md={ 10 }>
