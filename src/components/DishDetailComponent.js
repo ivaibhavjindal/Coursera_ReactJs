@@ -24,9 +24,8 @@ class CommentForm extends Component {
     }
     
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
         this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -51,9 +50,9 @@ class CommentForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                            <Label md={ 12 } htmlFor="name">Your Name</Label>
+                            <Label md={ 12 } htmlFor="author">Your Name</Label>
                                 <Col md={ 12 }>
-                                    <Control.text model=".name" id="name" name="name"
+                                    <Control.text model=".author" id="author" name="author"
                                         placeholder="Your Name"
                                         className="form-control"
                                         validators={{
@@ -61,7 +60,7 @@ class CommentForm extends Component {
                                         }} />
                                     <Errors
                                         className="text-danger"
-                                        model=".name"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             minLength: 'Must be greater than 2 characters',
@@ -89,13 +88,15 @@ class CommentForm extends Component {
 function RenderDish({ dish }) {
     if (dish != null) {
         return (
-            <Card>
-                <CardImg width="100%" src={ dish.image } alt={ dish.name } />
-                <CardBody>
-                    <CardTitle>{ dish.name }</CardTitle>
-                    <CardText>{ dish.description }</CardText>
-                </CardBody>
-            </Card>
+            <div className="col-12 col-md-5 m-1">
+                <Card>
+                    <CardImg width="100%" src={ dish.image } alt={ dish.name } />
+                    <CardBody>
+                        <CardTitle>{ dish.name }</CardTitle>
+                        <CardText>{ dish.description }</CardText>
+                    </CardBody>
+                </Card>
+            </div>
         );
     } else {
         return (
@@ -104,11 +105,12 @@ function RenderDish({ dish }) {
     }
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
     if (comments != null) {
         return (
-            <React.Fragment>
+            <div className="col-12 col-md-5 m-1">
                 <h4> Comments </h4>
+                <ul className="list-unstyled">
                 { comments.map( (comment) => {
                     return (
                         <li key={ comment.id } className="list-unstyled">
@@ -119,8 +121,9 @@ function RenderComments({ comments }) {
                         </li>
                     );
                 })
-            }
-            </React.Fragment>
+                }</ul>
+                <CommentForm dishId={ dishId } addComment={ addComment }/>
+            </div>
         ); 
     } else {
         return (
@@ -143,13 +146,9 @@ const DishDetail = (props) => {
                 </div>                
             </div>
             <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    <RenderDish dish={ props.dish } />
-                </div>
-                <div className="col-12 col-md-5 m-1">
-                    <RenderComments comments={ props.comments } />
-                    <CommentForm />
-                </div>
+                <RenderDish dish={ props.dish } />
+                <RenderComments comments={ props.comments }
+                addComment={ props.addComment } dishId={ props.dish.id } />
             </div>
         </div>
     );
